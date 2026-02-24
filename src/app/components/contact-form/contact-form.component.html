@@ -1,1 +1,49 @@
-<p>contact-form works!</p>
+<div class="panel" data-label="TRANSMISSION">
+  <div class="form-grid">
+    <div class="field">
+      <label for="contactName">Name</label>
+      <input id="contactName" type="text" [(ngModel)]="name" placeholder="Your name" autocomplete="name" />
+    </div>
+    <div class="field">
+      <label for="contactEmail">Email</label>
+      <input id="contactEmail" type="email" [(ngModel)]="email" placeholder="your@email.com" autocomplete="email" />
+    </div>
+    <div class="field full">
+      <label for="contactComment">Message</label>
+      <textarea id="contactComment" [(ngModel)]="comment" placeholder="Write your message here..."
+                [maxlength]="maxLen"></textarea>
+    </div>
+  </div>
+
+  <div class="form-footer">
+    <span class="char-count">{{ charCount }} / {{ maxLen }}</span>
+    <button class="btn" (click)="submit()" [disabled]="status === 'loading'">
+      <span class="btn-icon" [class.spin]="status === 'loading'">{{ status === 'loading' ? '↻' : '→' }}</span>
+      Send Transmission
+    </button>
+  </div>
+
+  <div class="result-box visible error-state" *ngIf="validationError">
+    <div class="result-label">Validation</div>
+    <div class="result-content">
+      <div><span class="key">status</span><span class="val err">✗ VALIDATION ERROR</span></div>
+      <div><span class="key">message</span><span class="val err">{{ validationError }}</span></div>
+    </div>
+  </div>
+
+  <div class="result-box" [class.visible]="status === 'success' || status === 'error'"
+       [class.success]="status === 'success'" [class.error-state]="status === 'error'">
+    <div class="result-label">Transmission Report</div>
+    <div class="result-content" *ngIf="status === 'success'">
+      <div><span class="key">status</span><span class="val ok">✓ TRANSMITTED</span></div>
+      <div><span class="key">email to</span><span class="val">{{ result?.email_sent_to }}</span></div>
+      <div><span class="key">saved id</span><span class="val">#{{ result?.submission_id }}</span></div>
+      <div><span class="key">timestamp</span><span class="val">{{ result?.timestamp }}</span></div>
+    </div>
+    <div class="result-content" *ngIf="status === 'error'">
+      <div><span class="key">status</span><span class="val err">✗ ERROR</span></div>
+      <div><span class="key">message</span><span class="val err">{{ result?.error }}</span></div>
+    </div>
+  </div>
+</div>
+

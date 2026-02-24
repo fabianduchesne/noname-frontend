@@ -1,1 +1,32 @@
-<p>db-status works!</p>
+<div class="panel" data-label="DATABASE">
+  <div class="db-status-row">
+    <span class="status-dot" [class.connected]="status === 'connected'" [class.error]="status === 'error'"></span>
+    <span class="status-text">
+      {{ status === 'idle' ? 'Not connected' : status === 'loading' ? 'Connecting...' : status === 'connected' ? 'Connected' : 'Connection failed' }}
+    </span>
+  </div>
+
+  <button class="btn" (click)="connect()" [disabled]="status === 'loading' || status === 'connected'">
+    <span class="btn-icon" [class.spin]="status === 'loading'">
+      {{ status === 'connected' ? '✓' : status === 'loading' ? '↻' : '⬡' }}
+    </span>
+    {{ status === 'connected' ? 'Connected' : 'Connect DB' }}
+  </button>
+
+  <div class="result-box" [class.visible]="status === 'connected' || status === 'error'"
+       [class.success]="status === 'connected'" [class.error-state]="status === 'error'">
+    <div class="result-label">Connection Report</div>
+    <div class="result-content" *ngIf="status === 'connected'">
+      <div><span class="key">status</span><span class="val ok">✓ CONNECTED</span></div>
+      <div><span class="key">engine</span><span class="val">PostgreSQL {{ pgVersion }}</span></div>
+      <div><span class="key">platform</span><span class="val">{{ pgPlatform }}</span></div>
+      <div><span class="key">compiler</span><span class="val">{{ pgCompiler }}</span></div>
+      <div><span class="key">timestamp</span><span class="val">{{ timestamp }}</span></div>
+    </div>
+    <div class="result-content" *ngIf="status === 'error'">
+      <div><span class="key">status</span><span class="val err">✗ ERROR</span></div>
+      <div><span class="key">message</span><span class="val err">{{ result?.error }}</span></div>
+    </div>
+  </div>
+</div>
+

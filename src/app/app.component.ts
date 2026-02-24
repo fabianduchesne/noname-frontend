@@ -1,12 +1,15 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import { DbStatusComponent } from './components/db-status/db-status.component';
+import { ContactFormComponent } from './components/contact-form/contact-form.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  standalone: true,
+  imports: [DbStatusComponent, ContactFormComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'noname-frontend';
+  today = new Date().toISOString().slice(0, 10);
 }
+
